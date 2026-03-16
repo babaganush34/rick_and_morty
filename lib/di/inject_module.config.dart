@@ -12,8 +12,8 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
-import '../data/repositories/repository.dart' as _i103;
-import '../features/rick/cubit/rick_cubit.dart' as _i1069;
+import '../data/repositories/repository.dart' as _i388;
+import '../screens/rick/cubit/rick_cubit.dart' as _i165;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -26,9 +26,9 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.lazySingleton<_i103.Repository>(() => _i103.Repository());
-    gh.factory<_i1069.RickCubit>(
-        () => _i1069.RickCubit(repository: gh<_i103.Repository>()));
+    gh.lazySingleton<_i388.Repository>(() => _i388.Repository());
+    gh.factory<_i165.RickCubit>(
+        () => _i165.RickCubit(repository: gh<_i388.Repository>()));
     return this;
   }
 }

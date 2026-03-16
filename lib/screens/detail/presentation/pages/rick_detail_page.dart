@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morti/di/inject_module.dart';
-import 'package:rick_and_morti/features/detail/presentation/widgets/character_card_detail_widget.dart';
-import 'package:rick_and_morti/features/rick/cubit/rick_cubit.dart';
+import 'package:rick_and_morti/screens/detail/presentation/widgets/character_card_detail_widget.dart';
+import 'package:rick_and_morti/screens/rick/cubit/rick_cubit.dart';
 
 class RickDetailPage extends StatefulWidget {
   const RickDetailPage({super.key, required this.id});
