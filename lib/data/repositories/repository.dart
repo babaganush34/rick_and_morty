@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:rick_and_morti/data/models/rick_model.dart';
 
 @lazySingleton
-class ApiService {
+class Repository {
   final dio = Dio();
 
   Future<RickModel> getCharacters() async {
