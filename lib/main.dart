@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morti/di/inject_module.dart';
-import 'package:rick_and_morti/screens/rick/presentation/pages/rick_page.dart';
+import 'package:rick_and_morti/presentation/rick/pages/rick_page.dart';
 
 void main() async {
   configureDependencies();

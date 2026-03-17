@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rick_and_morti/data/models/rick_model.dart';
 
-@lazySingleton
-class Repository {
+@Injectable()
+class ApiService {
   final dio = Dio();
 
   Future<RickModel> getCharacters() async {
