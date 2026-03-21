@@ -9,7 +9,7 @@ import 'package:rick_and_morti/domain/usecases/get_episodes_usecase.dart';
 part 'rick_state.dart';
 
 @Injectable()
-class RickCubit extends Cubit<RickState> {
+class RickCubit extends BaseCubit<RickState> {
   final GetCharactersUsecase _getCharactersUsecase;
   final GetCharacterDetailUsecase _getCharacterDetailUsecase;
   final GetEpisodesUsecase _getEpisodesUsecase;
