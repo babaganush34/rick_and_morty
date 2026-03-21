@@ -1,12 +1,15 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morti/di/inject_module.dart';
 import 'package:rick_and_morti/presentation/detail/widgets/character_card_detail_widget.dart';
 import '../../cubit/rick_cubit.dart';
 
+@RoutePage()
 class RickDetailPage extends StatefulWidget {
-  const RickDetailPage({super.key, required this.id});
+  const RickDetailPage({required this.id, required this.name});
 
+  final String name;
   final int id;
 
   @override
@@ -25,7 +28,9 @@ class _RickDetailPageState extends State<RickDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(widget.name),
+      ),
       body: BlocBuilder<RickCubit, RickState>(
         bloc: cubit,
         builder: (context, state) {
@@ -38,7 +43,7 @@ class _RickDetailPageState extends State<RickDetailPage> {
                 id: item.id,
                 status: item.status,
                 gender: item.gender,
-                species: item.species, 
+                species: item.species,
                 episodes: state.episodes,
               ),
             );

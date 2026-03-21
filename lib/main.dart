@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:rick_and_morti/core/router/app_router.dart';
 import 'package:rick_and_morti/di/inject_module.dart';
-import 'package:rick_and_morti/presentation/rick/pages/rick_page.dart';
 
-void main() async {
+void main() {
   configureDependencies();
-  runApp(SafeArea(
-    child: MaterialApp(
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
+  final _router = AppRouter();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      home: RickPage(),
-    ),
-  ));
+      routerConfig: _router.config(),
+    );
+  }
 }

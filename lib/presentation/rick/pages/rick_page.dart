@@ -1,10 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_and_morti/core/router/app_router.dart';
 import 'package:rick_and_morti/di/inject_module.dart';
-import 'package:rick_and_morti/presentation/detail/pages/rick_detail_page.dart';
 import 'package:rick_and_morti/presentation/rick/widgets/character_card_widget.dart';
 import '../../cubit/rick_cubit.dart';
 
+@RoutePage()
 class RickPage extends StatefulWidget {
   const RickPage({super.key});
 
@@ -48,12 +50,8 @@ class _RickPageState extends State<RickPage> {
                 final item = list[index];
                 return InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => RickDetailPage(id: item.id),
-                      ),
-                    );
+                    context.pushRoute(
+                        RickDetailRoute(id: item.id, name: item.name));
                   },
                   child: CharacterCardWidget(
                     name: item.name,
