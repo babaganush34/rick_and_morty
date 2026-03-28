@@ -6,14 +6,14 @@ import 'package:rick_and_morti/data/models/rick_model.dart';
 import 'package:rick_and_morti/domain/repos/rick_repository.dart';
 
 @lazySingleton
-class GetCharactersUsecase implements Usecase<RickModel, NoParams> {
+class GetCharactersUsecase implements Usecase<RickModel, String?> {
   final RickRepository repository;
 
   GetCharactersUsecase(this.repository);
 
   @override
   Future<Either<Failure, RickModel>> call(params) {
-    return repository.getCharacters();
+    return repository.getCharacters(nextUrl: params);
   }
 }
 

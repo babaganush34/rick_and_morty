@@ -7,6 +7,11 @@ final class RickInitial extends RickState {}
 
 final class Loading extends RickState {}
 
+final class LoadingMore extends RickState {
+  final List<RickResult> characters;
+  LoadingMore({required this.characters});
+}
+
 final class Error extends RickState {
   final String error;
 
@@ -14,9 +19,10 @@ final class Error extends RickState {
 }
 
 final class Success extends RickState {
-  Success({required this.rickModel});
+  Success({required this.rickModel, required this.characters});
 
   final RickModel rickModel;
+  final List<RickResult> characters;
 }
 
 class SuccessDetail extends RickState {

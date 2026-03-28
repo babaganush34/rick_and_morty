@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rick_and_morti/data/models/rick_model.dart';
 
@@ -6,9 +7,12 @@ import 'package:rick_and_morti/data/models/rick_model.dart';
 class ApiService {
   final dio = Dio();
 
-  Future<RickModel> getCharacters() async {
-    final response = await dio.get('https://rickandmortyapi.com/api/character');
+  Future<RickModel> getCharacters({String? nextUrl}) async {
+    final response =
+        await dio.get(nextUrl ?? 'https://rickandmortyapi.com/api/character');
+    debugPrint(nextUrl);
     final data = RickModel.fromJson(response.data);
+    debugPrint(data.toString());
     return data;
   }
 
@@ -22,7 +26,6 @@ class ApiService {
   Future<List<EpisodeModel>> getEpisodes(List<String> urls) async {
     try {
       final ids = urls.map((url) => url.split('/').last).join(',');
-      print('>>> fetching episodes batch: $ids');
       final response = await dio.get(
         'https://rickandmortyapi.com/api/episode/$ids',
       );
@@ -34,7 +37,6 @@ class ApiService {
         return [EpisodeModel.fromJson(response.data)];
       }
     } catch (e) {
-      print('>>> episodes error: $e');
       return [];
     }
   }

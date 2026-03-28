@@ -4,12 +4,24 @@ part 'rick_model.g.dart';
 
 @JsonSerializable()
 class RickModel {
-  RickModel({required this.results});
+  RickModel({required this.results, required this.info});
 
   final List<RickResult> results;
+  final InfoModel info;
 
   factory RickModel.fromJson(Map<String, dynamic> json) =>
       _$RickModelFromJson(json);
+}
+
+@JsonSerializable()
+class InfoModel {
+  InfoModel({required this.prev, required this.next});
+
+  final String? next;
+  final String? prev;
+
+  factory InfoModel.fromJson(Map<String, dynamic> json) =>
+      _$InfoModelFromJson(json);
 }
 
 @JsonSerializable()

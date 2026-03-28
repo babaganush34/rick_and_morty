@@ -12,13 +12,15 @@ class RickRepositoryImpl implements RickRepository {
 
   RickRepositoryImpl(this.apiService);
   @override
-  Future<Either<Failure, RickModel>> getCharacters() async {
+  Future<Either<Failure, RickModel>> getCharacters({String? nextUrl}) async {
     try {
-      final list = await apiService.getCharacters();
+      final list = await apiService.getCharacters(nextUrl: nextUrl);
       return Right(list);
     } on DioException catch (e) {
       return Left(ServerFailure(
-          message: e.response?.data['message'] ?? 'Server error'));
+          message: (e.response?.data is Map)
+              ? e.response?.data['message'] ?? 'Server error'
+              : e.response?.data?.toString() ?? 'Server error'));
     } catch (e) {
       return Left(UnimplementedFailure(message: e.toString()));
     }
@@ -35,7 +37,8 @@ class RickRepositoryImpl implements RickRepository {
   }
 
   @override
-  Future<Either<Failure, List<EpisodeModel>>> getEpisodes(List<String> urls) async {
+  Future<Either<Failure, List<EpisodeModel>>> getEpisodes(
+      List<String> urls) async {
     try {
       final episodes = await apiService.getEpisodes(urls);
       return Right(episodes);

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CharacterCardWidget extends StatelessWidget {
@@ -23,7 +24,7 @@ class CharacterCardWidget extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
             child: AspectRatio(
               aspectRatio: 1,
-              child: Image.network(image, fit: BoxFit.cover),
+              child: CachedNetworkImage(imageUrl: image, fit: BoxFit.cover),
             ),
           ),
           Padding(
@@ -33,8 +34,9 @@ class CharacterCardWidget extends StatelessWidget {
                 Text(
                   name,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
                 Row(
                   children: [
@@ -49,6 +51,7 @@ class CharacterCardWidget extends StatelessWidget {
                       status,
                       style:
                           TextStyle(fontSize: 12, color: _statusColor(status)),
+                      textAlign: TextAlign.center,
                     )
                   ],
                 )

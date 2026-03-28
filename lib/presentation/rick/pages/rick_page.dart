@@ -16,11 +16,34 @@ class RickPage extends StatefulWidget {
 
 class _RickPageState extends State<RickPage> {
   final cubit = getIt<RickCubit>();
+  final _scrollController = ScrollController();
+  bool _isFetching = false;
+  DateTime? _lastFetch;
 
   @override
   void initState() {
     super.initState();
     cubit.getCharacters();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (!_isBottom || _isFetching) return;
+    final now = DateTime.now();
+    if (_lastFetch != null &&
+        now.difference(_lastFetch!) < Duration(seconds: 1)) {
+      return;
+    }
+    _isFetching = true;
+    _lastFetch = now;
+    cubit.getNextPage().whenComplete(() => _isFetching = false);
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll);
   }
 
   @override
@@ -33,39 +56,76 @@ class _RickPageState extends State<RickPage> {
         bloc: cubit,
         builder: (BuildContext context, RickState state) {
           if (state is Error) {
-            return Text('ERROR');
+            return Center(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error,
+                  color: Colors.red,
+                  size: 35,
+                ),
+                Text(
+                  'ERROR',
+                  style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red),
+                ),
+              ],
+            ));
           }
-          if (state is Success) {
-            final list = state.rickModel.results;
-            return GridView.builder(
-              padding: const EdgeInsets.all(12),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.65,
-              ),
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                final item = list[index];
-                return InkWell(
-                  onTap: () {
-                    context.pushRoute(
-                        RickDetailRoute(id: item.id, name: item.name));
-                  },
-                  child: CharacterCardWidget(
-                    name: item.name,
-                    image: item.image,
-                    id: item.id,
-                    status: item.status,
-                  ),
-                );
-              },
+          if (state is Loading) {
+            return Center(
+              child: CircularProgressIndicator(),
             );
           }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          if (state is Success || state is LoadingMore) {
+            final characters = state is Success
+                ? state.characters
+                : (state as LoadingMore).characters;
+            return CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.all(12),
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final item = characters[index];
+                        return InkWell(
+                          onTap: () => context.pushRoute(
+                              RickDetailRoute(id: item.id, name: item.name)),
+                          child: CharacterCardWidget(
+                            name: item.name,
+                            image: item.image,
+                            id: item.id,
+                            status: item.status,
+                          ),
+                        );
+                      },
+                      childCount: characters.length,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      childAspectRatio: 0.65,
+                    ),
+                  ),
+                ),
+                if (state is LoadingMore)
+                  const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 24),
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  ),
+              ],
+            );
+          }
+          return const SizedBox();
         },
       ),
     );

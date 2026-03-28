@@ -10,10 +10,22 @@ RickModel _$RickModelFromJson(Map<String, dynamic> json) => RickModel(
       results: (json['results'] as List<dynamic>)
           .map((e) => RickResult.fromJson(e as Map<String, dynamic>))
           .toList(),
+      info: InfoModel.fromJson(json['info'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RickModelToJson(RickModel instance) => <String, dynamic>{
       'results': instance.results,
+      'info': instance.info,
+    };
+
+InfoModel _$InfoModelFromJson(Map<String, dynamic> json) => InfoModel(
+      prev: json['prev'] as String?,
+      next: json['next'] as String?,
+    );
+
+Map<String, dynamic> _$InfoModelToJson(InfoModel instance) => <String, dynamic>{
+      'next': instance.next,
+      'prev': instance.prev,
     };
 
 RickResult _$RickResultFromJson(Map<String, dynamic> json) => RickResult(
